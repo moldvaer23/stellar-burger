@@ -8,12 +8,14 @@ import {
   getProfileOrders,
   getProfileOrdersThunk
 } from '../../services/slices/profileSlice';
+import { getFeedsThunk } from '../../services/slices/feedsSlice';
 
 export const ProfileOrders: FC = () => {
   const orders: TOrder[] = useSelector(getProfileOrders);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getFeedsThunk());
     dispatch(getProfileOrdersThunk());
   }, []);
 

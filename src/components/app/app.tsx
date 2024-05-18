@@ -18,7 +18,6 @@ import styles from './app.module.css';
 import { getCookie } from '../../utils/cookie';
 import { useDispatch } from '../../services/store';
 import { getUserThunk } from '../../services/slices/userSlice';
-import { getFeedsThunk } from '../../services/slices/feedsSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { getIngredientsThunk } from '../../services/slices/ingredientsSlice';
 
@@ -34,7 +33,6 @@ const App = () => {
   /* Делаем запросы базовых данных которые нужны будут для работы приложения */
   useEffect(() => {
     dispatch(getIngredientsThunk());
-    dispatch(getFeedsThunk());
   }, []);
 
   /* Проверка на наличие токена в куках если он есть проводим запрос на получения данных о пользователе */

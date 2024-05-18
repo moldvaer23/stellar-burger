@@ -1,5 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { v4 as uuid4 } from 'uuid';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type TInitialState = {
   constructorItems: {
@@ -36,8 +38,6 @@ const burgerConstructorSlice = createSlice({
   },
   reducers: {
     addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      const id = state.constructorItems.ingredients.length + 1;
-
       /* Если тип добавляемого ингредиента это bun то добавляем именно в bun */
       /* Иначе пушим в ингредиенты */
       if (action.payload.type === 'bun') {
@@ -48,7 +48,7 @@ const burgerConstructorSlice = createSlice({
 
       state.constructorItems.ingredients.push({
         ...action.payload,
-        id: id.toString()
+        id: uuid4()
       });
 
       state.burgerConstructor.ingredients.push(action.payload);
