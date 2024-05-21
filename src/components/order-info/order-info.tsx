@@ -1,17 +1,29 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 
-import { useParams } from 'react-router-dom';
-import { TIngredient, TOrder } from '@utils-types';
+import { TIngredient } from '@utils-types';
 
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { getIngredients } from '../../services/slices/ingredientsSlice';
-import { getFeedOrderActiveUrl } from '../../services/slices/feedsSlice';
+
+import { useParams } from 'react-router-dom';
+import {
+  getOrderByNumberThunk,
+  getOrderModalData
+} from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
-  const orderData = useSelector(getFeedOrderActiveUrl);
-  const ingredients: TIngredient[] = useSelector(getIngredients);
+  const orderData = useSelector(getOrderModalData);
+  const ingredients = useSelector(getIngredients);
+  const dispatch = useDispatch();
+
+  const url = useParams();
+  const urlNumber = url.number;
+
+  useEffect(() => {
+    dispatch(getOrderByNumberThunk(Number(urlNumber)));
+  }, []);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

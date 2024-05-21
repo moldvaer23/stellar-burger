@@ -37,21 +37,21 @@ const burgerConstructorSlice = createSlice({
     getBurgerConstructor: (state) => state.burgerConstructor
   },
   reducers: {
-    addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      /* Если тип добавляемого ингредиента это bun то добавляем именно в bun */
-      /* Иначе пушим в ингредиенты */
-      if (action.payload.type === 'bun') {
-        state.constructorItems.bun = action.payload;
-        state.burgerConstructor.bun._id = action.payload._id;
-        return;
-      }
-
-      state.constructorItems.ingredients.push({
-        ...action.payload,
-        id: uuid4()
-      });
-
-      state.burgerConstructor.ingredients.push(action.payload);
+    addIngredient: {
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        /* Если тип добавляемого ингредиента это bun то добавляем именно в bun */
+        /* Иначе пушим в ингредиенты */
+        if (action.payload.type === 'bun') {
+          state.constructorItems.bun = action.payload;
+          state.burgerConstructor.bun._id = action.payload._id;
+        } else {
+          state.constructorItems.ingredients.push(action.payload);
+          state.burgerConstructor.ingredients.push(action.payload);
+        }
+      },
+      prepare: (ingredient: TIngredient) => ({
+        payload: { ...ingredient, id: uuid4() }
+      })
     },
     removeIngredient: (state, action: PayloadAction<string>) => {
       const indexItems = state.constructorItems.ingredients.findIndex(

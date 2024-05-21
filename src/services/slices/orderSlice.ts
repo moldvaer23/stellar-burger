@@ -1,5 +1,5 @@
-import { orderBurgerApi } from '@api';
 import { TOrder } from '@utils-types';
+import { getOrderByNumberApi, orderBurgerApi } from '@api';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -7,12 +7,14 @@ import { clearConstructor } from './burgerConstructorSlice';
 
 type TInitialState = {
   name: string;
+  orderModalData: TOrder | null;
   orderData: TOrder | null;
   orderRequest: boolean;
 };
 
 const initialState: TInitialState = {
   name: '',
+  orderModalData: null,
   orderData: null,
   orderRequest: false
 };
@@ -28,12 +30,18 @@ export const orderBurgerThunk = createAsyncThunk(
     })
 );
 
+export const getOrderByNumberThunk = createAsyncThunk(
+  'feeds/getOrderByNumber',
+  async (data: number) => await getOrderByNumberApi(data)
+);
+
 const orderSlice = createSlice({
   name: 'order',
   initialState: initialState,
   selectors: {
     getOrderRequest: (state) => state.orderRequest,
-    getOrderData: (state) => state.orderData
+    getOrderData: (state) => state.orderData,
+    getOrderModalData: (state) => state.orderModalData
   },
   reducers: {
     clearOrder: (state) => {
@@ -50,11 +58,19 @@ const orderSlice = createSlice({
         state.orderRequest = false;
         state.orderData = action.payload.order;
         state.name = action.payload.name;
+      })
+
+      .addCase(getOrderByNumberThunk.pending, (state) => {
+        state.orderModalData = null;
+      })
+      .addCase(getOrderByNumberThunk.fulfilled, (state, action) => {
+        state.orderModalData = action.payload?.orders[0];
       });
   }
 });
 
-export const { getOrderData, getOrderRequest } = orderSlice.selectors;
+export const { getOrderData, getOrderRequest, getOrderModalData } =
+  orderSlice.selectors;
 export const { clearOrder } = orderSlice.actions;
 
 export const orderReducer = orderSlice.reducer;
