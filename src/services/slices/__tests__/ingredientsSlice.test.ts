@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { getIngredientsThunk, ingredientsReducer } from '../ingredientsSlice';
 import { TIngredient } from '@utils-types';
 
-describe('[Slice]: Ingredient', () => {
+describe('[Slice]: Ingredients', () => {
   const initialState = {
     buns: [],
     error: null,

@@ -2,6 +2,8 @@ import { expect } from '@jest/globals';
 import {
   addIngredient,
   burgerConstructorReducer,
+  moveIngredientDown,
+  moveIngredientUp,
   removeIngredient
 } from '../burgerConstructorSlice';
 
@@ -22,12 +24,12 @@ describe('[Slice]: BurgerConstructor', () => {
   const initIngredient = {
     _id: '1',
     name: '1',
-    type: '1',
-    proteins: 420,
-    fat: 142,
-    carbohydrates: 242,
-    calories: 4242,
-    price: 424,
+    type: 'main',
+    proteins: 1,
+    fat: 1,
+    carbohydrates: 1,
+    calories: 1,
+    price: 1,
     image: '1',
     image_mobile: '1',
     image_large: '1'
@@ -59,7 +61,7 @@ describe('[Slice]: BurgerConstructor', () => {
         ingredients: [
           {
             ...initIngredient,
-            id: 'be3269c5-4f0f-4222-9eba-97191b042055'
+            id: '1'
           }
         ]
       },
@@ -71,7 +73,7 @@ describe('[Slice]: BurgerConstructor', () => {
       }
     };
 
-    /* Получаем состояние и удаляем ингредиент*/
+    /* Получаем состояние и удаляем ингредиент */
     const newState = burgerConstructorReducer(
       initialConstructorItem,
       removeIngredient(
@@ -81,5 +83,105 @@ describe('[Slice]: BurgerConstructor', () => {
 
     const { constructorItems } = newState;
     expect(constructorItems.ingredients.length).toBe(0);
+  });
+
+  test('[test]: Обработка экшена перемещения ингредиента в низ на 1 позицию', () => {
+    const initialConstructorItem = {
+      constructorItems: {
+        bun: null,
+        ingredients: [
+          {
+            ...initIngredient,
+            _id: '1',
+            id: '1'
+          },
+          {
+            ...initIngredient,
+            _id: '2',
+            id: '2'
+          },
+          {
+            ...initIngredient,
+            _id: '3',
+            id: '3'
+          }
+        ]
+      },
+      burgerConstructor: {
+        bun: {
+          _id: ''
+        },
+        ingredients: [
+          initIngredient,
+          { ...initIngredient, _id: '2' },
+          { ...initIngredient, _id: '3' }
+        ]
+      }
+    };
+
+    /* Получаем состояние и перемещаем ингредиент c id 1 в низ на 1 позицию */
+    const newState = burgerConstructorReducer(
+      initialConstructorItem,
+      moveIngredientDown(
+        initialConstructorItem.constructorItems.ingredients[0].id
+      )
+    );
+
+    const { constructorItems } = newState;
+    expect(constructorItems.ingredients).toEqual([
+      { ...initIngredient, _id: '2', id: '2' },
+      { ...initIngredient, _id: '1', id: '1' },
+      { ...initIngredient, _id: '3', id: '3' }
+    ]);
+  });
+
+  test('[test]: Обработка экшена перемещения ингредиента вверх на 1 позицию', () => {
+    const initialConstructorItem = {
+      constructorItems: {
+        bun: null,
+        ingredients: [
+          {
+            ...initIngredient,
+            _id: '1',
+            id: '1'
+          },
+          {
+            ...initIngredient,
+            _id: '2',
+            id: '2'
+          },
+          {
+            ...initIngredient,
+            _id: '3',
+            id: '3'
+          }
+        ]
+      },
+      burgerConstructor: {
+        bun: {
+          _id: ''
+        },
+        ingredients: [
+          initIngredient,
+          { ...initIngredient, _id: '2' },
+          { ...initIngredient, _id: '3' }
+        ]
+      }
+    };
+
+    /* Получаем состояние и перемещаем ингредиент c id 3 вверх на 1 позицию */
+    const newState = burgerConstructorReducer(
+      initialConstructorItem,
+      moveIngredientUp(
+        initialConstructorItem.constructorItems.ingredients[2].id
+      )
+    );
+
+    const { constructorItems } = newState;
+    expect(constructorItems.ingredients).toEqual([
+      { ...initIngredient, _id: '1', id: '1' },
+      { ...initIngredient, _id: '3', id: '3' },
+      { ...initIngredient, _id: '2', id: '2' }
+    ]);
   });
 });
