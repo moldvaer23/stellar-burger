@@ -1,24 +1,20 @@
 import { expect } from '@jest/globals';
-import { getProfileOrdersThunk, profileReducer } from '../profileSlice';
+import {
+  getProfileOrdersThunk,
+  initialStateProfile,
+  profileReducer
+} from '../profileSlice';
 import { TOrder } from '@utils-types';
 
 describe('[Slice]: Profile', () => {
-  const initialState = {
-    isLoading: false,
-    orders: [],
-    ordersRequestError: null,
-    total: 0,
-    totalToday: 0
-  };
-
   test('[test]: экшен getProfileOrdersThunk.pending', () => {
     const newState = profileReducer(
-      initialState,
+      initialStateProfile,
       getProfileOrdersThunk.pending('')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateProfile,
       isLoading: true
     });
   });
@@ -28,12 +24,12 @@ describe('[Slice]: Profile', () => {
     const error: Error = { message: 'ERROR', name: 'ERROR' };
 
     const newState = profileReducer(
-      initialState,
+      initialStateProfile,
       getProfileOrdersThunk.rejected(error, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateProfile,
       ordersRequestError: error
     });
   });
@@ -53,12 +49,12 @@ describe('[Slice]: Profile', () => {
     ];
 
     const newState = profileReducer(
-      initialState,
+      initialStateProfile,
       getProfileOrdersThunk.fulfilled(response, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateProfile,
       orders: response
     });
   });

@@ -17,7 +17,7 @@ type TInitialState = {
   };
 };
 
-const initialState: TInitialState = {
+export const initialStateFeeds: TInitialState = {
   error: null,
   isLoading: false,
   orders: [],
@@ -34,7 +34,7 @@ export const getFeedsThunk = createAsyncThunk(
 
 const feedsSlice = createSlice({
   name: 'feeds',
-  initialState: initialState,
+  initialState: initialStateFeeds,
   selectors: {
     getFeed: (state) => state.feed,
     getFeedOrders: (state) => state.orders

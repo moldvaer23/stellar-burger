@@ -1,6 +1,6 @@
 describe('[Page]: ConstructorPage', () => {
   /* Конфигурация данных для тестов */
-  const URL = 'https://norma.nomoreparties.space/api';
+  const URL = Cypress.env('BURGER_API_URL');
   const bunIndex = 0;
   const ingredientIndex = 3;
 
@@ -17,7 +17,7 @@ describe('[Page]: ConstructorPage', () => {
     ).as('getIngredients');
 
     /* В начале каждого теста посещаем страницу */
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
 
     /* Проверяем что страница отобразилась */
     cy.get("[data-testid='page']").should('exist');
@@ -29,12 +29,13 @@ describe('[Page]: ConstructorPage', () => {
     cy.clearAllCookies();
   });
 
+  /* Ингредиент из списка ингредиентов */
+  const burgerIngredient = (index: number) =>
+    cy.get("[data-testid='burger-ingredient-item']").eq(index);
+
   it('[test]: Добавление ингредиента в конструктор', () => {
     /* Ищем ингредиент по индексу и кликаем на его кнопку добавления */
-    cy.get("[data-testid='burger-ingredient-item']")
-      .eq(ingredientIndex)
-      .find('button')
-      .click();
+    burgerIngredient(ingredientIndex).find('button').click();
 
     /* Проверяем что ингредиент появился */
     cy.get("[data-testid='burger-constructor-ingredient']");
@@ -42,10 +43,7 @@ describe('[Page]: ConstructorPage', () => {
 
   it('[test]: Открытие и закрытие модального окна с описанием ингредиента', () => {
     /* Ищем ингредиент по индексу и кликаем на его ссылку  */
-    cy.get("[data-testid='burger-ingredient-item']")
-      .eq(ingredientIndex)
-      .find('a')
-      .click();
+    burgerIngredient(ingredientIndex).find('a').click();
 
     /* Ищем модальное окно, закрываем его и смотрит что его нету */
     cy.get("[data-testid='modal']");
@@ -55,19 +53,16 @@ describe('[Page]: ConstructorPage', () => {
 
   it('[test]: Отображение в открытом модальном окне данных именно того ингредиента, по которому произошел клик.', () => {
     /* Функция для поиска названия ингредиента по индексу */
-    const ingredient = () =>
+    const ingredientName = () =>
       cy.get("[data-testid='burger-ingredient-name']").eq(ingredientIndex);
 
     /* Открываем модальное окно у этого ингредиента */
-    cy.get("[data-testid='burger-ingredient-item']")
-      .eq(ingredientIndex)
-      .find('a')
-      .click();
+    burgerIngredient(ingredientIndex).find('a').click();
 
     /* Смотрим что модальное окно открылось и проверяем наличие того же самого текста */
     cy.get("[data-testid='modal']");
 
-    ingredient().then((item) => {
+    ingredientName().then((item) => {
       cy.get("[data-testid='modal-ingredient-name'").should(
         'have.text',
         item.text()
@@ -77,7 +72,7 @@ describe('[Page]: ConstructorPage', () => {
 
   it('[test]: Процесс создания заказа', () => {
     /* Переходим на страницу авторизации */
-    cy.visit('http://localhost:4000/login');
+    cy.visit('/login');
 
     /* Вводим данные для авторизации */
     cy.get("[data-testid='login-email-input']").type('volkovvova67@gmail.com');
@@ -110,16 +105,10 @@ describe('[Page]: ConstructorPage', () => {
     cy.location('pathname').should('eq', '/');
 
     /* Добавляем булку */
-    cy.get("[data-testid='burger-ingredient-item']")
-      .eq(bunIndex)
-      .find('button')
-      .click();
+    burgerIngredient(bunIndex).find('button').click();
 
     /* Добавляем ингредиент */
-    cy.get("[data-testid='burger-ingredient-item']")
-      .eq(ingredientIndex)
-      .find('button')
-      .click();
+    burgerIngredient(ingredientIndex).find('button').click();
 
     /* Перехватываем запрос на создание заказа */
     cy.intercept(

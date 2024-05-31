@@ -1,6 +1,7 @@
 import { expect } from '@jest/globals';
 import {
   getUserThunk,
+  initialStateUser,
   loginUserThunk,
   logoutUserThunk,
   registerUserThunk,
@@ -9,19 +10,6 @@ import {
 } from '../userSlice';
 
 describe('[Slice]: User', () => {
-  const initialState = {
-    isAuthChecked: false,
-    isAuthenticated: false,
-    regUserError: null,
-    regUserRequest: false,
-    loginUserError: null,
-    loginUserRequest: false,
-    userData: {
-      email: '',
-      name: ''
-    }
-  };
-
   const initialRegisterData = {
     email: '1',
     name: '1',
@@ -36,12 +24,12 @@ describe('[Slice]: User', () => {
   /* Тесты экшена регистрации */
   test('[test]: экшен registerUserThunk.pending', () => {
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       registerUserThunk.pending('', initialRegisterData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       regUserRequest: true
     });
   });
@@ -51,12 +39,12 @@ describe('[Slice]: User', () => {
     const error: Error = { message: 'ERROR', name: 'ERROR' };
 
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       registerUserThunk.rejected(error, '', initialRegisterData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       regUserError: error
     });
   });
@@ -69,12 +57,12 @@ describe('[Slice]: User', () => {
     };
 
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       registerUserThunk.fulfilled(response, '', initialRegisterData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       isAuthenticated: true,
       userData: {
         email: '1',
@@ -86,12 +74,12 @@ describe('[Slice]: User', () => {
   /* Тесты экшена авторизации */
   test('[test]: экшен loginUserThunk.pending', () => {
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       loginUserThunk.pending('', initialLoginData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       isAuthChecked: true,
       loginUserRequest: true
     });
@@ -102,12 +90,12 @@ describe('[Slice]: User', () => {
     const error: Error = { message: 'ERROR', name: 'ERROR' };
 
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       loginUserThunk.rejected(error, '', initialLoginData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       loginUserError: error
     });
   });
@@ -120,12 +108,12 @@ describe('[Slice]: User', () => {
     };
 
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       loginUserThunk.fulfilled(response, '', initialRegisterData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       isAuthenticated: true,
       userData: {
         email: '1',
@@ -136,10 +124,10 @@ describe('[Slice]: User', () => {
 
   /* Тесты экшена получения пользователя */
   test('[test]: экшен getUserThunk.pending', () => {
-    const newState = userReducer(initialState, getUserThunk.pending(''));
+    const newState = userReducer(initialStateUser, getUserThunk.pending(''));
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       isAuthChecked: true,
       loginUserRequest: true
     });
@@ -150,12 +138,12 @@ describe('[Slice]: User', () => {
     const error: Error = { message: 'ERROR', name: 'ERROR' };
 
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       getUserThunk.rejected(error, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       loginUserError: error
     });
   });
@@ -171,12 +159,12 @@ describe('[Slice]: User', () => {
     };
 
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       getUserThunk.fulfilled(response, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       isAuthenticated: true,
       userData: {
         email: '1',
@@ -198,13 +186,13 @@ describe('[Slice]: User', () => {
 
     /* Делаем запрос и меняем данные */
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       updateUserThunk.fulfilled(response, '', { email: '2', name: '2' })
     );
 
     /* Сверяем новые данные */
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateUser,
       userData: {
         email: '2',
         name: '2'
@@ -215,10 +203,10 @@ describe('[Slice]: User', () => {
   /* Тесты экшена выходи из профиля */
   test('[test]: экшен logoutUserThunk.fulfilled,', () => {
     const newState = userReducer(
-      initialState,
+      initialStateUser,
       logoutUserThunk.fulfilled(undefined, '')
     );
 
-    expect(newState).toEqual(initialState);
+    expect(newState).toEqual(initialStateUser);
   });
 });

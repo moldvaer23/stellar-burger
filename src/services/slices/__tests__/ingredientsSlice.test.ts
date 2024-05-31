@@ -1,17 +1,12 @@
 import { expect } from '@jest/globals';
-import { getIngredientsThunk, ingredientsReducer } from '../ingredientsSlice';
+import {
+  getIngredientsThunk,
+  ingredientsReducer,
+  initialStateIngredients
+} from '../ingredientsSlice';
 import { TIngredient } from '@utils-types';
 
 describe('[Slice]: Ingredients', () => {
-  const initialState = {
-    buns: [],
-    error: null,
-    ingredients: [],
-    isLoading: false,
-    mains: [],
-    sauces: []
-  };
-
   const initialIngredient = {
     _id: '1',
     name: '1',
@@ -28,12 +23,12 @@ describe('[Slice]: Ingredients', () => {
 
   test('[test]: экшен getIngredientsThunk.pending', () => {
     const newState = ingredientsReducer(
-      initialState,
+      initialStateIngredients,
       getIngredientsThunk.pending('')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateIngredients,
       isLoading: true
     });
   });
@@ -43,12 +38,12 @@ describe('[Slice]: Ingredients', () => {
     const error: Error = { message: 'ERROR', name: 'ERROR' };
 
     const newState = ingredientsReducer(
-      initialState,
+      initialStateIngredients,
       getIngredientsThunk.rejected(error, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateIngredients,
       error: error
     });
   });
@@ -72,13 +67,13 @@ describe('[Slice]: Ingredients', () => {
     ];
 
     const newState = ingredientsReducer(
-      initialState,
+      initialStateIngredients,
       getIngredientsThunk.fulfilled(response, '')
     );
 
     /* Смотрим что ингредиенты добавлены и расфасованы в нужные массивы */
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateIngredients,
       ingredients: response,
       buns: [response[0]],
       mains: [response[1]],

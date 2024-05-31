@@ -15,7 +15,7 @@ type TInitialState = {
   totalToday: number;
 };
 
-const initialState: TInitialState = {
+export const initialStateProfile: TInitialState = {
   isLoading: false,
   orders: [],
   ordersRequestError: null,
@@ -30,7 +30,7 @@ export const getProfileOrdersThunk = createAsyncThunk(
 
 const profileSlice = createSlice({
   name: 'profile',
-  initialState: initialState,
+  initialState: initialStateProfile,
   selectors: {
     getProfileOrders: (state) => state.orders
   },

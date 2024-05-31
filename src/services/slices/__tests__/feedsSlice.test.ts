@@ -1,22 +1,12 @@
-import { feedsReducer, getFeedsThunk } from '../feedsSlice';
+import { feedsReducer, getFeedsThunk, initialStateFeeds } from '../feedsSlice';
 import { expect } from '@jest/globals';
 
 describe('[Slice]: Feeds', () => {
-  const initialState = {
-    error: null,
-    isLoading: false,
-    orders: [],
-    feed: {
-      total: 0,
-      totalToday: 0
-    }
-  };
-
   test('[test]: экшен getFeedsThunk.pending', () => {
-    const newState = feedsReducer(initialState, getFeedsThunk.pending(''));
+    const newState = feedsReducer(initialStateFeeds, getFeedsThunk.pending(''));
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateFeeds,
       isLoading: true
     });
   });
@@ -26,12 +16,12 @@ describe('[Slice]: Feeds', () => {
     const error: Error = { message: 'ERROR', name: 'ERROR' };
 
     const newState = feedsReducer(
-      initialState,
+      initialStateFeeds,
       getFeedsThunk.rejected(error, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateFeeds,
       error: error
     });
   });
@@ -56,12 +46,12 @@ describe('[Slice]: Feeds', () => {
     };
 
     const newState = feedsReducer(
-      initialState,
+      initialStateFeeds,
       getFeedsThunk.fulfilled(response, '')
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateFeeds,
       orders: response.orders,
       feed: {
         total: 1,

@@ -1,26 +1,15 @@
 import { expect } from '@jest/globals';
+
 import {
   addIngredient,
   burgerConstructorReducer,
+  initialStateBurgerConstructor,
   moveIngredientDown,
   moveIngredientUp,
   removeIngredient
 } from '../burgerConstructorSlice';
 
 describe('[Slice]: BurgerConstructor', () => {
-  const initialState = {
-    constructorItems: {
-      bun: null,
-      ingredients: []
-    },
-    burgerConstructor: {
-      bun: {
-        _id: ''
-      },
-      ingredients: []
-    }
-  };
-
   const initIngredient = {
     _id: '1',
     name: '1',
@@ -38,7 +27,7 @@ describe('[Slice]: BurgerConstructor', () => {
   test('[test]: Обработка экшена добавления ингредиента', () => {
     /* Получаем состояние и добавляем ингредиент*/
     const newState = burgerConstructorReducer(
-      initialState,
+      initialStateBurgerConstructor,
       addIngredient(initIngredient)
     );
 
@@ -55,7 +44,7 @@ describe('[Slice]: BurgerConstructor', () => {
 
   test('[test]: Обработка экшена удаления ингредиента', () => {
     /* Состояние с уже добавленным ингредиентом */
-    const initialConstructorItem = {
+    const expectedItem = {
       constructorItems: {
         bun: null,
         ingredients: [
@@ -75,10 +64,8 @@ describe('[Slice]: BurgerConstructor', () => {
 
     /* Получаем состояние и удаляем ингредиент */
     const newState = burgerConstructorReducer(
-      initialConstructorItem,
-      removeIngredient(
-        initialConstructorItem.constructorItems.ingredients[0].id
-      )
+      expectedItem,
+      removeIngredient(expectedItem.constructorItems.ingredients[0].id)
     );
 
     const { constructorItems } = newState;

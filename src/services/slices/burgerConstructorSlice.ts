@@ -16,7 +16,7 @@ type TInitialState = {
   };
 };
 
-const initialState: TInitialState = {
+export const initialStateBurgerConstructor: TInitialState = {
   constructorItems: {
     bun: null,
     ingredients: []
@@ -31,7 +31,7 @@ const initialState: TInitialState = {
 
 const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
-  initialState: initialState,
+  initialState: initialStateBurgerConstructor,
   selectors: {
     getBurgerConstructorItems: (state) => state.constructorItems,
     getBurgerConstructor: (state) => state.burgerConstructor
@@ -93,8 +93,8 @@ const burgerConstructorSlice = createSlice({
       }
     },
     clearConstructor: (state) => {
-      state.burgerConstructor = initialState.burgerConstructor;
-      state.constructorItems = initialState.constructorItems;
+      state.burgerConstructor = initialStateBurgerConstructor.burgerConstructor;
+      state.constructorItems = initialStateBurgerConstructor.constructorItems;
     }
   }
 });

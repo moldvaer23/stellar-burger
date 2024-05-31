@@ -1,29 +1,23 @@
 import { expect } from '@jest/globals';
 import {
   getOrderByNumberThunk,
+  initialStateOrder,
   orderBurgerThunk,
   orderReducer
 } from '../orderSlice';
 
 describe('[Slice]: Order', () => {
-  const initialState = {
-    name: '',
-    orderModalData: null,
-    orderData: null,
-    orderRequest: false
-  };
-
   const initialOrderData = ['1', '2', '3'];
 
   /* Тесты экшена покупки бургера */
   test('[test]: экшен orderBurgerThunk.pending', () => {
     const newState = orderReducer(
-      initialState,
+      initialStateOrder,
       orderBurgerThunk.pending('', initialOrderData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateOrder,
       orderRequest: true
     });
   });
@@ -52,12 +46,12 @@ describe('[Slice]: Order', () => {
     };
 
     const newState = orderReducer(
-      initialState,
+      initialStateOrder,
       orderBurgerThunk.fulfilled(response, '', initialOrderData)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateOrder,
       orderData: response.order,
       name: response.name
     });
@@ -66,12 +60,12 @@ describe('[Slice]: Order', () => {
   /* Тесты экшена получения заказа по номеру */
   test('[test]: экшен getOrderByNumberThunk.pending', () => {
     const newState = orderReducer(
-      initialState,
+      initialStateOrder,
       getOrderByNumberThunk.pending('', 1)
     );
 
     expect(newState).toEqual({
-      ...initialState
+      ...initialStateOrder
     });
   });
 
@@ -100,12 +94,12 @@ describe('[Slice]: Order', () => {
     };
 
     const newState = orderReducer(
-      initialState,
+      initialStateOrder,
       getOrderByNumberThunk.fulfilled(response, '', 1)
     );
 
     expect(newState).toEqual({
-      ...initialState,
+      ...initialStateOrder,
       orderModalData: response.orders[0]
     });
   });

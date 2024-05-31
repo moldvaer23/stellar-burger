@@ -17,7 +17,7 @@ type TInitialState = {
   sauces: TIngredient[];
 };
 
-const initialState: TInitialState = {
+export const initialStateIngredients: TInitialState = {
   buns: [],
   error: null,
   ingredients: [],
@@ -33,7 +33,7 @@ export const getIngredientsThunk = createAsyncThunk(
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState: initialState,
+  initialState: initialStateIngredients,
   selectors: {
     getIngredients: (state) => state.ingredients,
     getIngredientsBuns: (state) => state.buns,
