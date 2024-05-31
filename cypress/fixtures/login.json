@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDczM2ZjOTdlZGUwMDAxZDA2YjFjOCIsImlhdCI6MTcxNzA1ODI4MCwiZXhwIjoxNzE3MDU5NDgwfQ.rZAzuoQDsjoL5UnJzWjrnfDFnEvQ_qlAXatfDbn_RMY",
+  "refreshToken": "23ec4da702850467c4bb59edbcd0aa40fcd00233ae8c55d1b62fd449ff149daa159799079e2086a2",
+  "user": {
+    "email": "volkovvova67@gmail.com",
+    "name": "Moldvaer"
+  }
+}

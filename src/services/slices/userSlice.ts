@@ -29,7 +29,7 @@ type TInitialState = {
   };
 };
 
-const initialState: TInitialState = {
+export const initialStateUser: TInitialState = {
   isAuthChecked: false,
   isAuthenticated: false,
   regUserError: null,
@@ -101,7 +101,7 @@ export const logoutUserThunk = createAsyncThunk(
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: initialState,
+  initialState: initialStateUser,
   selectors: {
     getUserData: (state) => state.userData,
     getUserIsAuth: (state) => state.isAuthenticated,

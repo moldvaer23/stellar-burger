@@ -12,7 +12,7 @@ type TInitialState = {
   orderRequest: boolean;
 };
 
-const initialState: TInitialState = {
+export const initialStateOrder: TInitialState = {
   name: '',
   orderModalData: null,
   orderData: null,
@@ -37,7 +37,7 @@ export const getOrderByNumberThunk = createAsyncThunk(
 
 const orderSlice = createSlice({
   name: 'order',
-  initialState: initialState,
+  initialState: initialStateOrder,
   selectors: {
     getOrderRequest: (state) => state.orderRequest,
     getOrderData: (state) => state.orderData,
